@@ -12,26 +12,19 @@ namespace Survey.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServicesController : ControllerBase
+    public class ServicesController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public ServicesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _mediator.Send(new GetServicesQuery());
+            var result = await mediator.Send(new GetServicesQuery());
             return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateServiceCommand command)
         {
-            var id = await _mediator.Send(command);
+            var id = await mediator.Send(command);
 
             return Ok(new
             {
@@ -44,7 +37,7 @@ namespace Survey.Api.Controllers
         public async Task<IActionResult> Update(Guid id, UpdateServiceRequest request)
         {
             var command = new UpdateServiceCommand(id,request.Name, request.Description);
-            await _mediator.Send(command);
+            await mediator.Send(command);
 
             return Ok(new { Message = "Service updated successfully" });
         }
@@ -54,7 +47,7 @@ namespace Survey.Api.Controllers
         {
             var command = new DeleteServiceCommand(id);
 
-            await _mediator.Send(command);
+            await mediator.Send(command);
 
             return Ok(new { Message = "Service deleted successfully" });
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Survey.Application.Interfaces;
+using Survey.Domain.Entities;
 using Survey.Domain.Entities.Services;
 
 namespace Survey.Infrastructure.Data
@@ -12,6 +13,7 @@ namespace Survey.Infrastructure.Data
         }
 
         public DbSet<Service> Services => Set<Service>();
+        public DbSet<Client> Clients => Set<Client>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
